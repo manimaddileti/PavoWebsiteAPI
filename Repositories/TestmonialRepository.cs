@@ -1,9 +1,9 @@
-﻿
-
-using Dapper;
+﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
+using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace PavoWebsiteDatabase.Repositories
 {
@@ -15,12 +15,11 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-        public async Task<IEnumerable<Testmonial>> GetAllTestmonials()
+        public async Task<IEnumerable<Testmonial>> GetTestmonials()
         {
-
             using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<Testmonial>("GetAllTestimonial", new {},commandType:CommandType.StoredProcedure);
+                return (await connection.QueryAsync<Testmonial>("[dbo].[GetTestimonial]", new { }, commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }

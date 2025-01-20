@@ -1,5 +1,4 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
 using System.Data;
@@ -14,13 +13,15 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-        public async Task<IEnumerable<HeaderSection>> GetAllHeaderSections()
+
+        public async Task<IEnumerable<HeaderSection>> GetHeaderSectionsAsync()
         {
             using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<HeaderSection> ("GetAllHeaderSections", new { }, commandType: CommandType.StoredProcedure);
+                return (await connection.QueryAsync<HeaderSection>("[dbo].[GetHeaderSections]", new { }, commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }
 }
+
 

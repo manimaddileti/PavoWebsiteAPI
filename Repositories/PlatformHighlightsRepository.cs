@@ -1,5 +1,4 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
@@ -14,13 +13,13 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-
-        public async Task<IEnumerable<PlatformHighlight>> GetAllPlatformHighlights()
+        public async Task<IEnumerable<PlatformHighlight>> GetPlatformHighlights()
         {
-            using (var connection = _dbConnection.connection())  
+            using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<PlatformHighlight>("GetAllPlatformHighlights", new {},commandType:CommandType.StoredProcedure);
+                return (await connection.QueryAsync<PlatformHighlight>("[dbo].[GetPlatformHighlights]", new { }, commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }
 }
+

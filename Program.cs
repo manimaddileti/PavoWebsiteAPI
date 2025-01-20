@@ -1,17 +1,28 @@
 
+using PavoWebsiteDatabase.Handlers;
 using PavoWebsiteDatabase.DatabaseConnect;
 using PavoWebsiteDatabase.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<MenuRepository>();
+builder.Services.AddScoped<MenuHandler>();
 builder.Services.AddScoped<HeaderSectionRepository>();
+builder.Services.AddScoped<HeaderSectionHandler>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserHandler>();
 builder.Services.AddScoped<PlatformHighlightsRepository>();
+builder.Services.AddScoped<PlatformHighlightsHandler>();
 builder.Services.AddScoped<PageContentRepository>();
-builder.Services.AddScoped<PageContentDetailRepository>();
+builder.Services.AddScoped<PageContentHandler>();
 builder.Services.AddScoped<SubscriptionDetailRepository>();
+builder.Services.AddScoped<SubscriptionDetailHandler>();
 builder.Services.AddScoped<SubscriptionDescriptionListRepository>();
+builder.Services.AddScoped<SubscriptionDescriptionListHandler>();
 builder.Services.AddScoped<TestmonialRepository>();
+builder.Services.AddScoped<TestmonialHandler>();
 builder.Services.AddScoped<ActivityMetricsRepository>();
+builder.Services.AddScoped<ActivityMetricsHandler>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<DatabaseConnection>();

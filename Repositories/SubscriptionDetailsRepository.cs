@@ -1,7 +1,9 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace PavoWebsiteDatabase.Repositories
 {
@@ -13,13 +15,11 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-
-        public async Task<IEnumerable<SubscriptionDetail>> GetAllSubscriptionDetails()
+        public async Task<IEnumerable<SubscriptionDetail>> GetSubscriptionDetails()
         {
-
-            using (var connection = _dbConnection.connection())  
+            using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<SubscriptionDetail>("GetAllSubscriptionDetails", new {},commandType:System.Data.CommandType.StoredProcedure);
+                return (await connection.QueryAsync<SubscriptionDetail>("[dbo].[GetSubscriptionDetails]", new { }, commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }

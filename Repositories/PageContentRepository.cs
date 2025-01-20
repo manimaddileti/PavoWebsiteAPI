@@ -1,8 +1,10 @@
 ﻿
 using Dapper;
-using System.Data;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
+using System.Collections.Generic;
+using System.Data;
+
 
 namespace PavoWebsiteDatabase.Repositories
 {
@@ -14,14 +16,14 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-        public async Task<IEnumerable<PageContent>> GetAllPageContent()
-        {
-         
 
-            using (var connection = _dbConnection.connection())  
+        public async Task<IEnumerable<PageContent>> GetPageContent()
+        {
+            using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<PageContent>("GetAllPageContent", new {},commandType:CommandType.StoredProcedure);
+                return (await connection.QueryAsync<PageContent>("[dbo].[GetPageContent]", new { }, commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }
 }
+

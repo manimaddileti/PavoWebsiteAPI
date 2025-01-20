@@ -1,5 +1,4 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
 using System.Data;
@@ -14,12 +13,13 @@ namespace PavoWebsiteDatabase.Repositories
         {
             _dbConnection = dbConnection;
         }
-        public async Task<IEnumerable<ActivityMetrics>> GetAllActivityMetrics()
-        {
 
-            using (var connection = _dbConnection.connection())  
+        public async Task<List<ActivityMetrics>> GetActivityMetricsAsync()
+        {
+            using (var connection = _dbConnection.connection())
             {
-                return await connection.QueryAsync<ActivityMetrics>("GetAllActivityMetrics", new { }, commandType:CommandType.StoredProcedure); 
+              
+                return (await connection.QueryAsync<ActivityMetrics>("[dbo].[GetActivityMetrics]",new { },commandType: CommandType.StoredProcedure)).ToList();
             }
         }
     }
