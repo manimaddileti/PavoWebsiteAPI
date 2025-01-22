@@ -1,25 +1,37 @@
 ﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace PavoWebsiteDatabase.Repositories
 {
-    public class SubscriptionDetailRepository
+    public interface ISubscriptionDetailRepository
+    {
+        Task<List<SubscriptionDetail>> GetSubscriptionDetailsAsync();
+    }
+    public class SubscriptionDetailRepository : ISubscriptionDetailRepository
     {
         private readonly DatabaseConnection _dbConnection;
+        private readonly ILogger<ISubscriptionDetailRepository> _logger;
 
-        public SubscriptionDetailRepository(DatabaseConnection dbConnection)
+        public SubscriptionDetailRepository(DatabaseConnection dbConnection, ILogger<ISubscriptionDetailRepository> logger)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
         }
-        public async Task<IEnumerable<SubscriptionDetail>> GetSubscriptionDetails()
+        public async Task<List<SubscriptionDetail>> GetSubscriptionDetailsAsync()
         {
-            using (var connection = _dbConnection.connection())
+            try
             {
-                return (await connection.QueryAsync<SubscriptionDetail>("[dbo].[GetSubscriptionDetails]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                using (var connection = _dbConnection.connection())
+                {
+                    return (await connection.QueryAsync<SubscriptionDetail>("[dbo].[GetSubscriptionDetails]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to execute subscriptiondetail.");
+                throw new Exception("Failed to retrieve subscription detail.", ex);
             }
         }
     }

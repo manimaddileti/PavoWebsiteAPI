@@ -5,17 +5,19 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class HeaderSectionHandler
     {
-        private readonly HeaderSectionRepository _headerSectionRepository;
+        private readonly IHeaderSectionRepository _headerSectionRepository;
 
-        public HeaderSectionHandler(HeaderSectionRepository headerSectionRepository)
+        public HeaderSectionHandler(IHeaderSectionRepository headerSectionRepository)
         {
             _headerSectionRepository = headerSectionRepository;
         }
 
-        public async Task<IEnumerable<HeaderSection>> GetHeaderSectionsAsync()
+        public async Task<List<HeaderSection>> GetHeaderSectionsAsync()
         {
-           
-            return await _headerSectionRepository.GetHeaderSectionsAsync();
+            var headerSections = await _headerSectionRepository.GetHeaderSectionsAsync();
+            if (headerSections == null || !headerSections.Any())
+                throw new Exception("Not found.");
+            return headerSections;
         }
     }
 }

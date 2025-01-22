@@ -1,26 +1,38 @@
 ﻿using Dapper;
 using PavoWebsiteDatabase.Models;
 using PavoWebsiteDatabase.DatabaseConnect;
-using System.Collections.Generic;
 using System.Data;
 
 namespace PavoWebsiteDatabase.Repositories
 {
-    public class SubscriptionDescriptionListRepository
+    public interface ISubscriptionDescriptionListRepository
+    {
+        Task<List<SubscriptionDescriptionList>> GetSubscriptionDescriptionListAsync();
+    }
+    public class SubscriptionDescriptionListRepository : ISubscriptionDescriptionListRepository
     {
         private readonly DatabaseConnection _dbConnection;
-
-        public SubscriptionDescriptionListRepository(DatabaseConnection dbConnection)
+        private readonly ILogger<SubscriptionDescriptionListRepository> _logger;
+        public SubscriptionDescriptionListRepository(DatabaseConnection dbConnection, ILogger<SubscriptionDescriptionListRepository> logger)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
         }
-        public async Task<IEnumerable<SubscriptionDescriptionList>> GetSubscriptionDescriptionList()
+        public async Task<List<SubscriptionDescriptionList>> GetSubscriptionDescriptionListAsync()
         {
-            using (var connection = _dbConnection.connection())
+            try
             {
-                return (await connection.QueryAsync<SubscriptionDescriptionList>("[dbo].[GetSubscriptionDescriptionList]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                using (var connection = _dbConnection.connection())
+                {
+                    var result = await connection.QueryAsync<SubscriptionDescriptionList>("[dbo].[GetSubscriptionDescriptionList]", new { }, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to execute GetSubscriptionDescriptionListAsync.");
+                throw new Exception("Failed to retrieve subscription description list.", ex);
             }
         }
     }
 }
-

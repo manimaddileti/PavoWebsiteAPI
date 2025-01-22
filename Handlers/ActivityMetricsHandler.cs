@@ -3,16 +3,22 @@ using PavoWebsiteDatabase.Repositories;
 
 public class ActivityMetricsHandler
 {
-    private readonly ActivityMetricsRepository _activityMetricsRepository;
+    private readonly IActivityMetricsRepository _activityMetricsRepository;
 
-    public ActivityMetricsHandler(ActivityMetricsRepository activityMetricsRepository)
+
+    public ActivityMetricsHandler(IActivityMetricsRepository activityMetricsRepository)
     {
         _activityMetricsRepository = activityMetricsRepository;
     }
 
     public async Task<List<ActivityMetrics>> GetActivityMetricsAsync()
     {
-        return await _activityMetricsRepository.GetActivityMetricsAsync();
+        var activityMatrices =   await _activityMetricsRepository.GetActivityMetricsAsync();
+
+        if (activityMatrices == null || !activityMatrices.Any())
+            throw new  Exception("Not found");
+
+        return activityMatrices;
     }
 }
 

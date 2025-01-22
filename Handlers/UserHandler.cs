@@ -6,15 +6,20 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class UserHandler
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserHandler(UserRepository userRepository)
+        public UserHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        public async Task<IEnumerable<User>> HandleGetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await _userRepository.GetUser();
+            var data = await _userRepository.GetUser();
+            if (data == null || !data.Any())
+            {
+                throw new Exception("User not found");
+            }
+            return data;
         }
     }
 }

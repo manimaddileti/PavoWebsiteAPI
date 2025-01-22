@@ -5,20 +5,36 @@ using System.Data;
 
 namespace PavoWebsiteDatabase.Repositories
 {
-    public class MenuRepository
+    public interface IMenuRepository
+    {
+        Task<List<Menu>> GetMenusAsync();
+    }
+
+    public class MenuRepository : IMenuRepository
     {
         private readonly DatabaseConnection _dbConnection;
+        private readonly ILogger<MenuRepository> _logger;
 
-        public MenuRepository(DatabaseConnection dbConnection)
+        public MenuRepository(DatabaseConnection dbConnection, ILogger<MenuRepository> logger)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<Menu>> GetMenusAsync()
+        public async Task<List<Menu>> GetMenusAsync()
         {
-            using (var connection = _dbConnection.connection())
+            try
             {
-                return (await connection.QueryAsync<Menu>("[dbo].[GetMenus]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                using (var connection = _dbConnection.connection())
+                {
+                    var result = await connection.QueryAsync<Menu>("[dbo].[GetMenus]", new { }, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while fetching menus: {ex.Message}");
+                throw new Exception("Failed to retrieve menus.", ex);
             }
         }
     }

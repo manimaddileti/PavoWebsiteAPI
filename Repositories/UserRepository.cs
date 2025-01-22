@@ -5,20 +5,35 @@ using System.Data;
 
 namespace PavoWebsiteDatabase.Repositories
 {
-    public class UserRepository
+    public interface IUserRepository
+    {
+        Task<List<User>>GetUser();
+    }
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseConnection _dbConnection;
+        private readonly ILogger <IUserRepository> _logger;
 
-        public UserRepository(DatabaseConnection dbConnection)
+        public UserRepository(DatabaseConnection dbConnection, ILogger <IUserRepository> logger)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
         }
-        public async Task<IEnumerable<User>> GetUser()
+        public async Task<List<User>> GetUser()
         {
-            using (var connection = _dbConnection.connection())
+            try
             {
-                return (await connection.QueryAsync<User>("[dbo].[GetUser]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                using (var connection = _dbConnection.connection())
+                {
+                    return (await connection.QueryAsync<User>("[dbo].[GetUser]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                }
             }
+            catch (Exception ex)
+                {
+                _logger.LogError(ex, "Failed to execute GetUser.");
+                throw new Exception("Failed to retrieve User list.", ex);
+            }
+            
         }
     }
 }

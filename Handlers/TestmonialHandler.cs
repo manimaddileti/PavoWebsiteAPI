@@ -5,15 +5,20 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class TestmonialHandler
     {
-        private readonly TestmonialRepository _testmonialRepository;
+        private readonly ITestmonialRepository _testmonialRepository;
 
-        public TestmonialHandler(TestmonialRepository testmonialRepository)
+        public TestmonialHandler(ITestmonialRepository testmonialRepository)
         {
             _testmonialRepository = testmonialRepository;
         }
-        public async Task<IEnumerable<Testmonial>> HandleGetTestmonialsAsync()
+        public async Task<IEnumerable<Testmonial>> GetTestmonials()
         {
-            return await _testmonialRepository.GetTestmonials();
+            var data = await _testmonialRepository.GetTestmonialsAsync();
+            if (data == null || !data.Any())
+            {
+                throw new Exception("data not found in testmonials");
+            }
+            return data;
         }
     }
 }

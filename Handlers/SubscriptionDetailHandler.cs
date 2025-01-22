@@ -5,15 +5,20 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class SubscriptionDetailHandler
     {
-        private readonly SubscriptionDetailRepository _subscriptionDetailRepository;
+        private readonly ISubscriptionDetailRepository _subscriptionDetailRepository;
 
-        public SubscriptionDetailHandler(SubscriptionDetailRepository subscriptionDetailRepository)
+        public SubscriptionDetailHandler(ISubscriptionDetailRepository subscriptionDetailRepository)
         {
             _subscriptionDetailRepository = subscriptionDetailRepository;
         }
-        public async Task<IEnumerable<SubscriptionDetail>> HandleGetSubscriptionDetailsAsync()
+        public async Task<IEnumerable<SubscriptionDetail>> GetSubscriptionDetailsAsync()
         {
-            return await _subscriptionDetailRepository.GetSubscriptionDetails();
+            var subscriptionDetails =  await _subscriptionDetailRepository.GetSubscriptionDetailsAsync();
+            if (subscriptionDetails == null || !subscriptionDetails.Any())
+            {
+                throw new Exception("Subscription detail not found");
+            }
+            return subscriptionDetails;
         }
     }
 }

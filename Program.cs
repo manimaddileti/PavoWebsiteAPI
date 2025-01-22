@@ -5,32 +5,39 @@ using PavoWebsiteDatabase.Repositories;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .WriteTo.File("logs/Log.txt", rollingInterval: RollingInterval.Day)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File(@"C:/logs/Log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 
-
+Log.Information("welcome to Pavo!");
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<MenuRepository>();
+
+builder.Logging
+    .ClearProviders()
+    .AddSimpleConsole()
+    .AddDebug();
+
+builder.Services.AddScoped<IMenuRepository,MenuRepository>();
 builder.Services.AddScoped<MenuHandler>();
-builder.Services.AddScoped<HeaderSectionRepository>();
+builder.Services.AddScoped<IHeaderSectionRepository,HeaderSectionRepository>();
 builder.Services.AddScoped<HeaderSectionHandler>();
-builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<UserHandler>();
-builder.Services.AddScoped<PlatformHighlightsRepository>();
+builder.Services.AddScoped<IPlatformHighlightsRepository,PlatformHighlightsRepository>();
 builder.Services.AddScoped<PlatformHighlightsHandler>();
-builder.Services.AddScoped<PageContentRepository>();
+builder.Services.AddScoped<IPageContentRepository, PageContentRepository>();
 builder.Services.AddScoped<PageContentHandler>();
-builder.Services.AddScoped<SubscriptionDetailRepository>();
+builder.Services.AddScoped<ISubscriptionDetailRepository, SubscriptionDetailRepository>();
 builder.Services.AddScoped<SubscriptionDetailHandler>();
-builder.Services.AddScoped<SubscriptionDescriptionListRepository>();
+builder.Services.AddScoped<ISubscriptionDescriptionListRepository, SubscriptionDescriptionListRepository>();
 builder.Services.AddScoped<SubscriptionDescriptionListHandler>();
-builder.Services.AddScoped<TestmonialRepository>();
+builder.Services.AddScoped<ITestmonialRepository, TestmonialRepository>();
 builder.Services.AddScoped<TestmonialHandler>();
-builder.Services.AddScoped<ActivityMetricsRepository>();
+builder.Services.AddScoped<IActivityMetricsRepository,ActivityMetricsRepository>();
 builder.Services.AddScoped<ActivityMetricsHandler>();
-builder.Services.AddScoped<FooterRepository>();
+builder.Services.AddScoped<IFooterRepository,FooterRepository>();
 builder.Services.AddScoped<FooterHandler>();
 
 

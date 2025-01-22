@@ -5,15 +5,18 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class PlatformHighlightsHandler
     {
-        private readonly PlatformHighlightsRepository _platformHighlightsRepository;
+        private readonly IPlatformHighlightsRepository _platformHighlightsRepository;
 
-        public PlatformHighlightsHandler(PlatformHighlightsRepository platformHighlightsRepository)
+        public PlatformHighlightsHandler(IPlatformHighlightsRepository platformHighlightsRepository)
         {
             _platformHighlightsRepository = platformHighlightsRepository;
         }
-        public async Task<IEnumerable<PlatformHighlight>> HandleGetPlatformHighlightsAsync()
+        public async Task<IEnumerable<PlatformHighlight>> GetPlatformHighlightsAsync()
         {
-            return await _platformHighlightsRepository.GetPlatformHighlights();
+            var platformHighlights = await _platformHighlightsRepository.GetPlatformHighlightsAsync();
+            if (platformHighlights == null || !platformHighlights.Any())
+                throw new Exception("PlatformHighlights not found");
+            return platformHighlights;
         }
     }
 }

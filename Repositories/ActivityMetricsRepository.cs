@@ -5,21 +5,35 @@ using System.Data;
 
 namespace PavoWebsiteDatabase.Repositories
 {
-    public class ActivityMetricsRepository
+    public interface IActivityMetricsRepository
+    {
+        public Task<List<ActivityMetrics>> GetActivityMetricsAsync();
+    }
+    public class ActivityMetricsRepository : IActivityMetricsRepository
     {
         private readonly DatabaseConnection _dbConnection;
+        private readonly ILogger<IActivityMetricsRepository> _logger;
 
-        public ActivityMetricsRepository(DatabaseConnection dbConnection)
+        public ActivityMetricsRepository(DatabaseConnection dbConnection, ILogger<IActivityMetricsRepository> logger)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
         }
 
         public async Task<List<ActivityMetrics>> GetActivityMetricsAsync()
         {
-            using (var connection = _dbConnection.connection())
+            try
             {
-              
-                return (await connection.QueryAsync<ActivityMetrics>("[dbo].[GetActivityMetrics]",new { },commandType: CommandType.StoredProcedure)).ToList();
+                using (var connection = _dbConnection.connection())
+                {
+
+                    return (await connection.QueryAsync<ActivityMetrics>("[dbo].[GetActivityMetrics]", new { }, commandType: CommandType.StoredProcedure)).ToList();
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Failed to execute");
+                throw new Exception("Failed to retrive list", ex);
             }
         }
     }

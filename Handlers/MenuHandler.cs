@@ -5,16 +5,21 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class MenuHandler
     {
-        private readonly MenuRepository _menuRepository;
+        private readonly IMenuRepository _menuRepository;
 
-        public MenuHandler(MenuRepository menuRepository)
+        public MenuHandler(IMenuRepository menuRepository)
         {
             _menuRepository = menuRepository;
         }
 
         public async Task<IEnumerable<Menu>> GetMenusAsync()
         {
-            return await _menuRepository.GetMenusAsync();
+            var menus = await _menuRepository.GetMenusAsync();
+            if (menus == null || !menus.Any())
+            {
+                throw new Exception("menus not found");
+            }
+            return menus;
         }
     }
 }
