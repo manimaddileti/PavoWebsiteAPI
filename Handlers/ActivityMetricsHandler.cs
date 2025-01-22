@@ -10,7 +10,6 @@ public class ActivityMetricsHandler
         _activityMetricsRepository = activityMetricsRepository;
     }
 
-
     public async Task<List<ActivityMetrics>> GetActivityMetricsAsync()
     {
         return await _activityMetricsRepository.GetActivityMetricsAsync();

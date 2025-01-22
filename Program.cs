@@ -2,6 +2,14 @@
 using PavoWebsiteDatabase.Handlers;
 using PavoWebsiteDatabase.DatabaseConnect;
 using PavoWebsiteDatabase.Repositories;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File("logs/Log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<MenuRepository>();
@@ -22,6 +30,9 @@ builder.Services.AddScoped<TestmonialRepository>();
 builder.Services.AddScoped<TestmonialHandler>();
 builder.Services.AddScoped<ActivityMetricsRepository>();
 builder.Services.AddScoped<ActivityMetricsHandler>();
+builder.Services.AddScoped<FooterRepository>();
+builder.Services.AddScoped<FooterHandler>();
+
 
 
 builder.Services.AddControllers();
