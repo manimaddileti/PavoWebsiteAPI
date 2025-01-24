@@ -14,7 +14,7 @@ namespace PavoWebsiteDatabase.Handlers
         }
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            var data = await _userRepository.GetUser();
+            var data = await _userRepository.GetUserRepositoryAsync();
             if (data == null || !data.Any())
             {
                 throw new Exception("User not found");

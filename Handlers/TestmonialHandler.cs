@@ -11,7 +11,7 @@ namespace PavoWebsiteDatabase.Handlers
         {
             _testmonialRepository = testmonialRepository;
         }
-        public async Task<IEnumerable<Testmonial>> GetTestmonials()
+        public async Task<IEnumerable<Testmonial>> GetTestmonialsAsync()
         {
             var data = await _testmonialRepository.GetTestmonialsAsync();
             if (data == null || !data.Any())

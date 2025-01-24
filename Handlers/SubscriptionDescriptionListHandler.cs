@@ -12,14 +12,14 @@ namespace PavoWebsiteDatabase.Handlers
         {
             _subscriptionDescriptionListRepository = subscriptionDescriptionListRepository;
         }
-        public async Task<IEnumerable<SubscriptionDescriptionList>> HandleGetSubscriptionDescriptionListAsync()
+        public async Task<IEnumerable<SubscriptionDescriptionList>> GetSubscriptionDescriptionListAsync()
         {
-            var subscriptionDescriptionList = await _subscriptionDescriptionListRepository.GetSubscriptionDescriptionListAsync();
-            if (subscriptionDescriptionList == null || !subscriptionDescriptionList.Any())
+            var subscriptionData = await _subscriptionDescriptionListRepository.GetSubscriptionDescriptionListAsync();
+            if (subscriptionData == null || !subscriptionData.Any())
             {
                 throw new Exception("subscription description list not found");
             }
-            return subscriptionDescriptionList;
+            return subscriptionData;
         }
     }
 }

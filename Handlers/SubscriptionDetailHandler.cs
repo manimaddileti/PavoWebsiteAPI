@@ -5,9 +5,9 @@ namespace PavoWebsiteDatabase.Handlers
 {
     public class SubscriptionDetailHandler
     {
-        private readonly ISubscriptionDetailRepository _subscriptionDetailRepository;
+        private readonly ISubscriptionDetailsRepository _subscriptionDetailRepository;
 
-        public SubscriptionDetailHandler(ISubscriptionDetailRepository subscriptionDetailRepository)
+        public SubscriptionDetailHandler(ISubscriptionDetailsRepository subscriptionDetailRepository)
         {
             _subscriptionDetailRepository = subscriptionDetailRepository;
         }

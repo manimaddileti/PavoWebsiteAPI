@@ -12,14 +12,14 @@ namespace PavoWebsiteDatabase.Handlers
             _pageContentRepository = pageContentRepository;
         }
 
-        public async Task<IEnumerable<PageContent>> GetPageContentAsync()
+        public async Task<List<PageContent>> GetPageContentAsync()
         {
-            var pageContent = await _pageContentRepository.GetPageContentAsync();
-            if (pageContent == null || !pageContent.Any())
+            var pagedata = await _pageContentRepository.GetPageContentAsync();
+            if (pagedata == null || !pagedata.Any())
             {
                 throw new Exception("Page Content not found");
             }
-            return pageContent;
+            return pagedata;
         }
     }
 }

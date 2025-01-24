@@ -14,7 +14,7 @@ namespace PavoWebsiteDatabase.Handlers
 
         public async Task<IEnumerable<Menu>> GetMenusAsync()
         {
-            var menus = await _menuRepository.GetMenusAsync();
+            var menus = await _menuRepository.GetMenuRepositoryAsync();
             if (menus == null || !menus.Any())
             {
                 throw new Exception("menus not found");

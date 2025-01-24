@@ -19,25 +19,25 @@ builder.Logging
     .AddSimpleConsole()
     .AddDebug();
 
-builder.Services.AddScoped<IMenuRepository,MenuRepository>();
+builder.Services.AddScoped<IMenuRepository, Repositories>();
 builder.Services.AddScoped<MenuHandler>();
-builder.Services.AddScoped<IHeaderSectionRepository,HeaderSectionRepository>();
+builder.Services.AddScoped<IHeaderSectionRepository, Repositories>();
 builder.Services.AddScoped<HeaderSectionHandler>();
-builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IUserRepository,Repositories>();
 builder.Services.AddScoped<UserHandler>();
-builder.Services.AddScoped<IPlatformHighlightsRepository,PlatformHighlightsRepository>();
+builder.Services.AddScoped<IPlatformHighlightsRepository,Repositories>();
 builder.Services.AddScoped<PlatformHighlightsHandler>();
-builder.Services.AddScoped<IPageContentRepository, PageContentRepository>();
+builder.Services.AddScoped<IPageContentRepository, Repositories>();
 builder.Services.AddScoped<PageContentHandler>();
-builder.Services.AddScoped<ISubscriptionDetailRepository, SubscriptionDetailRepository>();
+builder.Services.AddScoped<ISubscriptionDetailsRepository, Repositories>();
 builder.Services.AddScoped<SubscriptionDetailHandler>();
-builder.Services.AddScoped<ISubscriptionDescriptionListRepository, SubscriptionDescriptionListRepository>();
+builder.Services.AddScoped<ISubscriptionDescriptionListRepository, Repositories>();
 builder.Services.AddScoped<SubscriptionDescriptionListHandler>();
-builder.Services.AddScoped<ITestmonialRepository, TestmonialRepository>();
+builder.Services.AddScoped<ITestmonialRepository, Repositories>();
 builder.Services.AddScoped<TestmonialHandler>();
-builder.Services.AddScoped<IActivityMetricsRepository,ActivityMetricsRepository>();
+builder.Services.AddScoped<IActivityMetricsRepository,Repositories>();
 builder.Services.AddScoped<ActivityMetricsHandler>();
-builder.Services.AddScoped<IFooterRepository,FooterRepository>();
+builder.Services.AddScoped<IFooterRepository,Repositories>();
 builder.Services.AddScoped<FooterHandler>();
 
 

@@ -19,7 +19,7 @@ namespace PavoWebsiteApi.Controllers
         private readonly TestmonialHandler _testmonialHandler;
         private readonly UserHandler _userHandler;
         private readonly FooterHandler _footerHandler;
-       
+
 
 
         public apiController(
@@ -50,24 +50,23 @@ namespace PavoWebsiteApi.Controllers
 
         [HttpGet("ActivityMetrics")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<ActivityMetrics>>> GetActivityMetrics()
         {
-
+            Console.WriteLine("user requesting for activity metrics!!");
             var activityMetrics = await _activityMetricsHandler.GetActivityMetricsAsync();
             return Ok(activityMetrics);
-
         }
 
 
         [HttpGet("HeaderSection")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetHeaderSections()
         {
-                var headerSections = await _headerSectionHandler.GetHeaderSectionsAsync();
+            var headerSections = await _headerSectionHandler.GetHeaderSectionsAsync();
             return Ok(headerSections);
         }
 
@@ -75,87 +74,91 @@ namespace PavoWebsiteApi.Controllers
 
         [HttpGet("menus")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetMenus()
         {
-                var menus = await _menuHandler.GetMenusAsync();
-            return Ok (menus);
+            var menus = await _menuHandler.GetMenusAsync();
+            return Ok(menus);
         }
 
 
         [HttpGet("PageContent")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllPageContent()
         {
-                var pageContent = await _pageContentHandler.GetPageContentAsync();
-                return Ok (pageContent);
+            var pageContent = await _pageContentHandler.GetPageContentAsync();
+            return Ok(pageContent);
         }
 
 
 
         [HttpGet("PlatformHighlights")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<PlatformHighlight>>> GetPlatformHighlights()
         {
-                var highlights = await _platformHighlightsHandler.GetPlatformHighlightsAsync();
-                return Ok(highlights);
+            var highlights = await _platformHighlightsHandler.GetPlatformHighlightsAsync();
+            if (highlights == null)
+            {
+                return NotFound("data cannot be found ");
+            }
+            return Ok(highlights);
         }
 
 
 
         [HttpGet("SubscriptionDescriptionList")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<SubscriptionDescriptionList>>> GetSubscriptionDescriptionList()
         {
-                var subscriptionDescriptionList = await _subscriptionDescriptionListHandler.HandleGetSubscriptionDescriptionListAsync();
-                return Ok(subscriptionDescriptionList);
+            var subscriptionDescriptionList = await _subscriptionDescriptionListHandler.GetSubscriptionDescriptionListAsync();
+            return Ok(subscriptionDescriptionList);
         }
 
 
         [HttpGet("SubscriptionDetail")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<SubscriptionDetail>>> GetSubscriptionDetails()
         {
-                var subscriptionDetails = await _subscriptionDetailHandler.GetSubscriptionDetailsAsync();
-                return Ok(subscriptionDetails);
+            var subscriptionDetails = await _subscriptionDetailHandler.GetSubscriptionDetailsAsync();
+            return Ok(subscriptionDetails);
         }
 
 
 
         [HttpGet("Testmonials")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Testmonial>>> GetTestmonialsAsync()
         {
-                var testmonials = await _testmonialHandler.GetTestmonials();
-                return Ok(testmonials);
+            var testmonials = await _testmonialHandler.GetTestmonialsAsync();
+            return Ok(testmonials);
         }
 
 
 
         [HttpGet("Users")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetUsers()
         {
-                var users = await _userHandler.GetUsersAsync();
-                return Ok(users);
+            var users = await _userHandler.GetUsersAsync();
+            return Ok(users);
         }
 
         [HttpGet("Footer")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Footer>>> GetFooter()
         {
